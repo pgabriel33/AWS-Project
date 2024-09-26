@@ -1,18 +1,11 @@
 
-# Welcome to your CDK Python project!
+# API CRUD SERVELESS USING AWS CDK, LAMBDA, DYNAMODB AND API GATEWAY!
 
-This is a blank project for CDK development with Python.
+This project run a cdk template to provide Lambda functions to create API CRUD using Dynamo tables on AWS.
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+Steps to run the project. 
 
-This project is set up like a standard Python project.  The initialization
-process also creates a virtualenv within this project, stored under the `.venv`
-directory.  To create the virtualenv it assumes that there is a `python3`
-(or `python` for Windows) executable in your path with access to the `venv`
-package. If for any reason the automatic creation of the virtualenv fails,
-you can create the virtualenv manually.
-
-To manually create a virtualenv on MacOS and Linux:
+On terminal you need to create the virtual env on MacOS and Linux:
 
 ```
 $ python3 -m venv .venv
@@ -31,10 +24,20 @@ If you are a Windows platform, you would activate the virtualenv like this:
 % .venv\Scripts\activate.bat
 ```
 
-Once the virtualenv is activated, you can install the required dependencies.
+Once the virtualenv is activated, you need install the required dependencies.
 
 ```
 $ pip install -r requirements.txt
+```
+On virtualenv you need install the other depedencie for Dynamo DB on python file called boto3. Try this:
+
+```
+$ pip install boto3
+```
+Prepare your AWS account to receive CDK deployments. Use this:
+
+```
+$ cdk bootstrap
 ```
 
 At this point you can now synthesize the CloudFormation template for this code.
@@ -43,16 +46,46 @@ At this point you can now synthesize the CloudFormation template for this code.
 $ cdk synth
 ```
 
-To add additional dependencies, for example other CDK libraries, just add
-them to your `setup.py` file and rerun the `pip install -r requirements.txt`
-command.
+You can deploy the CloudFormation template at your AWS account with this command:
 
-## Useful commands
+```
+$ cdk deploy
+```
 
- * `cdk ls`          list all stacks in the app
- * `cdk synth`       emits the synthesized CloudFormation template
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk docs`        open CDK documentation
+After all the resources have been provisioned on AWS, you can test using the Curl tool on terminal with this command for:
 
-Enjoy!
+Create task
+
+```
+$ curl -X POST https://{api-id}.execute-api.{your-region-on-AWS}.amazonaws.com/prod/tasks \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "title": "Task 1",
+    "description": "This is task 1",
+    "status": "pending"
+  }'
+```
+
+List task
+
+```
+$ curl -X GET https://{api-id}.execute-api.{your-region-on-AWS}.amazonaws.com/prod/tasks/{task-id}
+```
+
+Update task
+
+```
+$ curl -X PUT https://{api-id}.execute-api.{your-region-on-AWS}.amazonaws.com/prod/tasks/{task-id} \                      
+  -H 'Content-Type: application/json' \
+  -d '{
+    "title": "Updated Task 1",
+    "description": "This task has been updated",
+    "status": "completed"
+  }'
+```
+
+Delete task
+
+```
+$ curl -X DELETE https://{api-id}.execute-api.{your-region-on-AWS}.amazonaws.com/prod/tasks/{task-id}
+```
