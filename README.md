@@ -89,3 +89,5 @@ Delete task
 ```
 $ curl -X DELETE https://{api-id}.execute-api.{your-region-on-AWS}.amazonaws.com/prod/tasks/{task-id}
 ```
+
+OBS: Don't forget to create the policy for allow your AWS user read, list and write about the services API Gateway, Lambda, Dynamo DB, S3, STS, IAM and CloudFormation.
